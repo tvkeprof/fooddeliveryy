@@ -1,12 +1,20 @@
+"use client";
+
 import { ChevronLeft } from "lucide-react";
+import { useEffect } from "react";
 import { object, string, number, date, InferType } from "yup";
 export const SignUpPage = () => {
-  let userSchema = object({
-    name: string().required(),
-    age: number().required().positive().integer(),
-    email: string().email(),
-    website: string().url().nullable(),
-    createdOn: date().default(() => new Date()),
+  const fe = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/test");
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
+    fe();
   });
   return (
     <div className="w-screen h-screen flex justify-between items-center">
