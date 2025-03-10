@@ -3,10 +3,9 @@ import * as yup from "yup";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import UserSchema from "../validations/userValidation";
-import { useEffect } from "react";
 import axios from "axios";
 
-const SignUpPage = () => {
+const SignUpPage = ({onNext}) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
@@ -21,6 +20,7 @@ const SignUpPage = () => {
     try {
       const validatedData = await UserSchema.validate(userData);
       console.log("Validated Data:", validatedData);
+      onNext()
     } catch (err: any) {
       setError(err.message);
       console.error("Validation Error:", err);
@@ -29,17 +29,17 @@ const SignUpPage = () => {
     const fe = async () => {
       const value = "";
       try {
-        const response = await axios.post("http://localhost:9999/login", {
-          body: JSON.stringify(userData),
+        const response = await axios.post("http://localhost:9999/user", {
+          email: formData.email,
+          password: formData.password,
         });
         console.log(response);
+        fe();
       } catch (error) {
         console.log("error", error);
       }
     };
-    useEffect(() => {
-      fe();
-    });
+
   };
 
   return (
@@ -90,8 +90,10 @@ const SignUpPage = () => {
           className="w-full h-full rounded-[10px]"
         />
       </div>
+
     </div>
   );
 };
 
 export default SignUpPage;
+
