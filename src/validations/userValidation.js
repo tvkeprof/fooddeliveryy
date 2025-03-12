@@ -1,8 +1,13 @@
 import * as yup from "yup";
 
-const UserSchema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(4).max(10).required(),
+export const EmailOnlySchema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
 });
 
-export default UserSchema;
+export const UserSchema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(4, "Password must be at least 4 characters")
+    .required("Password is required"),
+});
