@@ -77,6 +77,12 @@ const HomePage = () => {
               </div>
             </div>
           </div>
+          <div className="border-[#71717A] mt-10 text-[#71717A] flex gap-8 justify-start p-10 ">
+            <p>Copy right 2024 @ Nomnom LLC</p>
+            <p>Privacy policy</p>
+            <p>Terms and condition</p>
+            <p>Cookie policy</p>
+          </div>
         </div>
       </div>
     </div>
