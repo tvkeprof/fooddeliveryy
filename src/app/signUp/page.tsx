@@ -1,22 +1,20 @@
-
-
 "use client";
 
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
-import { EmailOnlySchema,  UserSchema} from "@/validations/userValidation";
+import { EmailOnlySchema, UserSchema } from "@/validations/userValidation";
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
 
-const SignUpPage = ({ onNext}: any) => {
+const SignUpPage = () => {
   const Router = useRouter();
-  const goToLogIn = ()=>{
-    Router.push("/logIn")
-  }
+  const goToLogIn = () => {
+    Router.push("/logIn");
+  };
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false); 
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const [step, setStep] = useState(1);
 
   const submitUserData = async () => {
@@ -38,31 +36,27 @@ const SignUpPage = ({ onNext}: any) => {
       email: formData.email,
       password: formData.password,
     };
-    
+
     try {
       if (step === 1) {
         const validatedEmail = await EmailOnlySchema.validate({
           email: formData.email,
         });
         console.log("Validated Email:", validatedEmail);
-        setIsEmailValid(true); 
-        setStep(2); 
+        setIsEmailValid(true);
+        setStep(2);
       } else if (step === 2) {
-        
         const validatedPassword = await UserSchema.validate(userData);
         console.log("Validated Data:", validatedPassword);
-        
-        submitUserData()
-        onNext();  
+
+        submitUserData();
+        Router.push("/logIn");
       }
     } catch (err: any) {
       setError(err.message);
       console.error("Validation Error:", err);
     }
   };
-  
-  
-
 
   return (
     <div className="w-screen h-screen flex justify-between items-center">
@@ -83,7 +77,9 @@ const SignUpPage = ({ onNext}: any) => {
             className="border p-2 rounded-lg"
             placeholder="Enter your email address"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
         )}
 
@@ -100,7 +96,11 @@ const SignUpPage = ({ onNext}: any) => {
           />
         )}
 
-        <button type="submit" className="bg-gray-300 p-3 rounded-lg">
+        <button
+          type="submit"
+          className="bg-gray-300 p-3 rounded-lg"
+          onClick={step === 2 ? submitUserData : undefined}
+        >
           {step === 1 ? "Next" : "Let's go"}
         </button>
 
@@ -108,8 +108,9 @@ const SignUpPage = ({ onNext}: any) => {
 
         <div className="flex gap-4 justify-center">
           <p className="text-[#71717A] text-lg">Already have an account?</p>
-          <a onClick={goToLogIn}
-          className="text-blue-500 text-lg">Log in</a>
+          <a onClick={goToLogIn} className="text-blue-500 text-lg">
+            Log in
+          </a>
         </div>
       </form>
 

@@ -6,6 +6,9 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 const LogIn = ({}) => {
   const Router = useRouter();
+  const goToSignUp = () => {
+    Router.push("/signUp");
+  };
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -69,7 +72,9 @@ const LogIn = ({}) => {
         </button>
         <div className="flex gap-4 justify-center">
           <p className="text-[#71717A] text-lg">Don't have an account?</p>
-          <a className="text-blue-500 text-lg">Sign up</a>
+          <a onClick={goToSignUp} className="text-blue-500 text-lg">
+            Sign up
+          </a>
         </div>
       </div>
       <div className="w-[55%] h-[80%] mr-[100px]">
