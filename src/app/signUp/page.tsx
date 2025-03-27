@@ -6,6 +6,7 @@ import { EmailOnlySchema, UserSchema } from "@/validations/userValidation";
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
+import { useUser } from "@/components/AuthProvider/UserProvider";
 
 const SignUpPage = () => {
   const Router = useRouter();
@@ -16,6 +17,8 @@ const SignUpPage = () => {
   const [error, setError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [step, setStep] = useState(1);
+  const { email, role } = useUser();
+  console.log("email", email);
 
   const submitUserData = async () => {
     try {

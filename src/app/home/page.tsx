@@ -1,6 +1,11 @@
+"use client";
+
+import { useUser } from "@/components/AuthProvider/UserProvider";
 import { ChevronRight } from "lucide-react";
 
 const HomePage = () => {
+  const { email, role } = useUser();
+  console.log("email", email, role);
   return (
     <div className="w-full h-full">
       <div className="w-full h-auto flex flex-col">

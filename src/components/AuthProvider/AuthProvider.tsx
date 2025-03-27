@@ -17,7 +17,7 @@ const AuthProvider = ({
 
   useEffect(() => {
     if (!token || isExpired) {
-      router.push("/logIn");
+      router.push("/signUp");
     } else {
       router.push("/home");
     }
