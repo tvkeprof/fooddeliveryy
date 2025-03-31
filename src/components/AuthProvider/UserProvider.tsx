@@ -4,6 +4,7 @@ import { useState, createContext, useContext, useEffect } from "react";
 type UserContextType = {
   email: string | undefined;
   role: string | undefined;
+  id: string | undefined;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -17,8 +18,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(false);
   }, []);
 
+  console.log("aaa", user);
+
   return (
-    <UserContext.Provider value={{ email: user?.email, role: user?.role }}>
+    <UserContext.Provider
+      value={{ email: user?.email, role: user?.role, id: user?.id }}
+    >
       {loading ? <div>...loading</div> : children}
     </UserContext.Provider>
   );

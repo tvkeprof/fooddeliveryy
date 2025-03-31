@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { DeliveryAddress } from "./DeliveryAddress";
+import { ProfileButton } from "./ProfileButton";
 
 export const Header = () => {
   return (
@@ -10,18 +11,11 @@ export const Header = () => {
           <img src="LogoNomNom.png" className="w-[146px] h-[44px]" />
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex border rounded-2xl bg-white h-[36px] items-center">
-            <img src="LocationIcon.png" className="w-[20px] h-[20px]" />
-            <p className="text-[#EF4444]">Delivery address:</p>
-            <p className="text-[#71717A]">Add location</p>
-            <ChevronRight className="w-[20px] h-[20px] text-[#71717A]" />
-          </button>
+          <DeliveryAddress />
           <button>
             <img src="IconButtonSags.png" className="w-[36px] h-[36px]" />
           </button>
-          <button>
-            <img src="IconButtonProfile.png" className="w-[36px] h-[36px]" />
-          </button>
+          <ProfileButton />
         </div>
       </div>
       <div>

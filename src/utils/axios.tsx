@@ -16,3 +16,14 @@ export const getFoods = async () => {
     console.log("err while getting foods", err);
   }
 };
+export const addAddress = async (id: string, address: string) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:9999/user/addAdress/${id}`,
+      address
+    );
+    return response;
+  } catch (err) {
+    console.log("err while getting address", err);
+  }
+};
