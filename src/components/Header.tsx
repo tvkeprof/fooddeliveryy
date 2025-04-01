@@ -1,6 +1,7 @@
 "use client";
 
 import { DeliveryAddress } from "./DeliveryAddress";
+import { OrderDetail } from "./OrderDetail";
 import { ProfileButton } from "./ProfileButton";
 
 export const Header = () => {
@@ -12,9 +13,7 @@ export const Header = () => {
         </div>
         <div className="flex items-center gap-3">
           <DeliveryAddress />
-          <button>
-            <img src="IconButtonSags.png" className="w-[36px] h-[36px]" />
-          </button>
+          <OrderDetail />
           <ProfileButton />
         </div>
       </div>

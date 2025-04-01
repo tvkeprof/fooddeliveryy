@@ -20,7 +20,7 @@ export const addAddress = async (id: string, address: string) => {
   try {
     const response = await axios.put(
       `http://localhost:9999/user/addAdress/${id}`,
-      address
+      { address }
     );
     return response;
   } catch (err) {

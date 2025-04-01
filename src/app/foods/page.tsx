@@ -1,74 +1,8 @@
-// "use client";
-
-// import { getFoods, getCategories } from "@/utils/axios";
-// import { useEffect, useState } from "react";
-
-// interface Food {
-//   _id: string;
-//   foodName: string;
-//   price: number;
-//   ingredients: string;
-//   image: string;
-//   category: string;
-// }
-// interface Category {
-//   _id: string;
-//   categoryName: string;
-// }
-
-// const AllFoods = ({ categoryId }: { categoryId: string }) => {
-//   const [category, setCategory] = useState<Category[]>([]);
-//   const [foods, setFoods] = useState<Food[]>([]);
-
-//   const fetchFoods = async () => {
-//     const data = await getFoods();
-//     if (data) setFoods(data);
-//   };
-//   const fetchCategories = async () => {
-//     const data = await getCategories();
-//     if (data) setCategory(data);
-//   };
-//   useEffect(() => {
-//     fetchFoods();
-//     fetchCategories();
-//   }, [categoryId]);
-
-//   const filteredFoods = categoryId
-//     ? foods.filter((food) => food.category === categoryId)
-//     : foods;
-
-//   return (
-//     <div>
-//       <ul className="w-full h-auto flex flex-wrap gap-8">
-//         {filteredFoods.length > 0 ? (
-//           filteredFoods.map((food) => (
-//             <li
-//               key={food._id}
-//               className="w-[270px] h-auto outline-1 outline-offset-2 outline-solid p-2 rounded-lg bg-white shadow-lg"
-//             >
-//               <img
-//                 src={food.image}
-//                 className="w-[230px] h-[130px] object-cover rounded-md mt-2"
-//               />
-//               <div className="flex items-center justify-between">
-//                 <p className="text-lg text-red-400">{food.foodName}</p>
-//                 <p className="text-sm text-gray-500">${food.price}</p>
-//               </div>
-//               <p className="mt-2 text-sm text-white">{food.ingredients}</p>
-//             </li>
-//           ))
-//         ) : (
-//           <li>No foods found.</li>
-//         )}
-//       </ul>
-//     </div>
-//   );
-// };
-// export default AllFoods;
 "use client";
 
 import { getFoods, getCategories } from "@/utils/axios";
 import { useEffect, useState } from "react";
+import { FoodDetail } from "@/components/FoodDetail";
 
 interface Food {
   _id: string;
@@ -88,6 +22,8 @@ const AllFoods = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [foods, setFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,6 +47,16 @@ const AllFoods = () => {
   const getFoodsByCategory = (categoryId: string) =>
     foods.filter((food) => food.category === categoryId);
 
+  const handleFoodClick = (food: Food) => {
+    setSelectedFood(food);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setSelectedFood(null);
+  };
+
   return (
     <div>
       {loading ? (
@@ -128,13 +74,19 @@ const AllFoods = () => {
                   {categoryFoods.map((food) => (
                     <li
                       key={food._id}
-                      className="w-[400px] h-auto outline-1 outline-offset-2 outline-solid p-2 rounded-lg bg-white shadow-lg"
+                      className="w-[400px] relative h-auto outline-1 outline-offset-2 outline-solid p-2 rounded-lg bg-white shadow-lg"
                     >
                       <img
                         src={food.image}
                         className="w-[330px] h-[200px] m-auto object-cover rounded-md mt-2"
                         alt={food.foodName}
                       />
+                      <button
+                        onClick={() => handleFoodClick(food)}
+                        className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded-full shadow-md hover:bg-red-600 transition"
+                      >
+                        +
+                      </button>
                       <div className="flex flex-col p-3">
                         <div className="flex gap-6 justify-between">
                           <p className="text-xl text-red-500">
@@ -142,13 +94,8 @@ const AllFoods = () => {
                           </p>
                           <p className="text-xl text-gray-500">${food.price}</p>
                         </div>
-                        <div>
-                          <p>{food.ingredients}</p>
-                        </div>
+                        <p>{food.ingredients}</p>
                       </div>
-                      <p className="mt-2 text-sm text-white">
-                        {food.ingredients}
-                      </p>
                     </li>
                   ))}
                 </ul>
@@ -163,6 +110,12 @@ const AllFoods = () => {
       ) : (
         <p>No categories found.</p>
       )}
+
+      <FoodDetail
+        food={selectedFood}
+        isOpen={dialogOpen}
+        onClose={handleCloseDialog}
+      />
     </div>
   );
 };

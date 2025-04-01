@@ -1,13 +1,12 @@
 "use client";
 
+import MotionText from "./MotionText";
+
 export const Footer = () => {
   return (
     <div className="w-full h-auto bg-[#18181B]">
       <div className="w-full h-[90px] mt-[70px] bg-[#EF4444] flex justify-between items-center">
-        <p className="text-[#FAFAFA] text-[30px]">Fresh fast delivered</p>
-        <p className="text-[#FAFAFA] text-[30px]">Fresh fast delivered</p>
-        <p className="text-[#FAFAFA] text-[30px]">Fresh fast delivered</p>
-        <p className="text-[#FAFAFA] text-[30px]">Fresh fast delivered</p>
+        <MotionText />
       </div>
 
       <div className="flex justify-between text-white gap-x-4 mt-[70px] px-10">
