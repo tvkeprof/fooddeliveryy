@@ -29,7 +29,6 @@ const LogIn = ({}) => {
       } else {
         await Router.push("/home");
       }
-      //   console.log(response.data.user.role);
     } catch (err) {
       console.log("login failed", err);
       alert("aldaaaaaaaaa");

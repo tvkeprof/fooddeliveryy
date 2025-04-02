@@ -27,3 +27,11 @@ export const addAddress = async (id: string, address: string) => {
     console.log("err while getting address", err);
   }
 };
+export const postOrder = async (orderData: any) => {
+  try {
+    const response = await axios.post("http://localhost:9999/order", orderData);
+    return response;
+  } catch (err) {
+    console.log("err while getting order", err);
+  }
+};

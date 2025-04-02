@@ -17,8 +17,6 @@ const SignUpPage = () => {
   const [error, setError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [step, setStep] = useState(1);
-  const { email, role } = useUser();
-  console.log("email", email);
 
   const submitUserData = async () => {
     try {

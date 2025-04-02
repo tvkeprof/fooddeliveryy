@@ -13,7 +13,13 @@ export const Header = () => {
         </div>
         <div className="flex items-center gap-3">
           <DeliveryAddress />
-          <OrderDetail />
+          <OrderDetail
+            food={null}
+            isOpen={false}
+            onClose={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
           <ProfileButton />
         </div>
       </div>
