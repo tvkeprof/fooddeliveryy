@@ -31,7 +31,7 @@ const LogIn = ({}) => {
       }
     } catch (err) {
       console.log("login failed", err);
-      alert("aldaaaaaaaaa");
+      alert("login failed");
     }
   };
 
@@ -60,8 +60,6 @@ const LogIn = ({}) => {
             setFormData({ ...formData, password: e.target.value })
           }
         />
-
-        <a className=" border">Forgor password</a>
 
         <button
           type="submit"

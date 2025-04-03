@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useId } from "react";
 
 export const getCategories = async () => {
   try {
@@ -31,6 +32,14 @@ export const postOrder = async (orderData: any) => {
   try {
     const response = await axios.post("http://localhost:9999/order", orderData);
     return response;
+  } catch (err) {
+    console.log("err while getting order", err);
+  }
+};
+export const getOrder = async () => {
+  try {
+    const response = await axios.get("http://localhost:9999/order");
+    return response.data;
   } catch (err) {
     console.log("err while getting order", err);
   }

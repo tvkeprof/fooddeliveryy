@@ -6,7 +6,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { postOrder } from "@/utils/axios";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { postOrder, getOrder } from "@/utils/axios";
 import { useState, useEffect } from "react";
 
 interface Food {
@@ -20,11 +21,57 @@ interface Food {
   totalPrice: number;
 }
 
+interface Order {
+  _id: string;
+  items: Array<{
+    _id: string;
+    foodName: string;
+    quantity: number;
+    price: number;
+    totalPrice: number;
+  }>;
+  totalAmount: number;
+  status: string;
+  createdAt: string;
+}
+interface FoodOrder {
+  updatedAt: string | number | Date;
+  _id: string;
+  user: string;
+  totalPrice: number;
+  image: string;
+  foodOrderItems: { food: string; quantity: number }[];
+  status: string;
+}
+
 export const OrderDetail = () => {
   const [cart, setCart] = useState<Food[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [orders, setOrders] = useState<FoodOrder[]>([]);
+  const [error, setError] = useState<string>("");
 
+  const fetchOrders = async () => {
+    try {
+      const data = await getOrder();
+      if (data) {
+        setOrders(data);
+      } else {
+        setError("No orders found.");
+      }
+    } catch (err) {
+      console.error("🔥 Error fetching orders:", err);
+      setError("Failed to load orders. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  // Fetch cart data from localStorage
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(savedCart);
@@ -75,76 +122,122 @@ export const OrderDetail = () => {
   };
 
   return (
-    <Sheet>
-      <SheetTrigger>
-        <img
-          src="IconButtonSags.png"
-          className="w-[36px] h-[36px]"
-          alt="Cart Icon"
-        />
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <img
-              src="IconButtonSags.png"
-              className="w-[36px] h-[36px]"
-              alt="Cart Icon"
-            />
-            Order Detail
-          </SheetTitle>
-          <h1 className="text-xl font-bold">My Cart</h1>
-        </SheetHeader>
+    <>
+      {/* Button to open Sheet */}
+      <Sheet>
+        <SheetTrigger>
+          <img
+            src="IconButtonSags.png"
+            className="w-[36px] h-[36px]"
+            alt="Cart Icon"
+          />
+        </SheetTrigger>
 
-        {/* Cart Items */}
-        <div className="mt-4">
-          {cart.length === 0 ? (
-            <p className="text-gray-500">Your cart is empty.</p>
-          ) : (
-            <>
-              {cart.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center border-b py-2"
-                >
-                  <img
-                    src={item.image}
-                    className="w-[50px] h-[50px] rounded-md"
-                    alt={item.foodName}
-                  />
-                  <p className="text-lg font-medium">{item.foodName}</p>
-                  <p className="text-lg font-bold">{`$${item.totalPrice.toFixed(
-                    2
-                  )}`}</p>
-                  <p className="text-sm text-gray-600">
-                    Quantity: {item.quantity}
-                  </p>
-                </div>
-              ))}
+        {/* Sheet Content */}
+        <SheetContent className="h-[100vh] overflow-y-auto">
+          {" "}
+          {/* Add height and overflow */}
+          <SheetHeader>
+            <SheetTitle className="flex items-center gap-2">
+              <img
+                src="IconButtonSags.png"
+                className="w-[36px] h-[36px]"
+                alt="Cart Icon"
+              />
+              Order Detail
+            </SheetTitle>
+          </SheetHeader>
+          {/* Tabs Inside Sheet */}
+          <Tabs defaultValue="cart" className="w-full mt-4">
+            <TabsList className="flex justify-between border-b pb-2">
+              <TabsTrigger value="cart">Cart</TabsTrigger>
+              <TabsTrigger value="history">Order</TabsTrigger>
+            </TabsList>
 
-              {/* Checkout Section */}
-              <div className="mt-6 border-t pt-4">
-                <div>
-                  <p>Payment info</p>
-                </div>
-                <div className="flex justify-between text-lg font-bold">
-                  <p>Total Amount:</p>
-                  <p>${totalAmount.toFixed(2)}</p>
-                </div>
-                <button
-                  onClick={handleCheckout}
-                  className={`bg-red-500 text-white px-6 py-2 rounded-full w-full mt-4 hover:bg-red-300 ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={loading}
-                >
-                  {loading ? "Processing..." : "Checkout"}
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </SheetContent>
-    </Sheet>
+            {/* Cart Tab */}
+            <TabsContent value="cart">
+              {cart.length === 0 ? (
+                <p className="text-gray-500 mt-4">Your cart is empty.</p>
+              ) : (
+                <>
+                  {cart.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center border-b py-2"
+                    >
+                      <img
+                        src={item.image}
+                        className="w-[50px] h-[50px] rounded-md"
+                        alt={item.foodName}
+                      />
+                      <p className="text-lg font-medium">{item.foodName}</p>
+                      <p className="text-lg font-bold">{`$${item.totalPrice.toFixed(
+                        2
+                      )}`}</p>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {item.quantity}
+                      </p>
+                    </div>
+                  ))}
+
+                  {/* Checkout Section */}
+                  <div className="mt-6 border-t pt-4">
+                    <div>
+                      <p>Payment info</p>
+                    </div>
+                    <div className="flex justify-between text-lg font-bold">
+                      <p>Total Amount:</p>
+                      <p>${totalAmount.toFixed(2)}</p>
+                    </div>
+                    <button
+                      onClick={handleCheckout}
+                      className={`bg-red-500 text-white px-6 py-2 rounded-full w-full mt-4 hover:bg-red-300 ${
+                        loading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                      disabled={loading}
+                    >
+                      {loading ? "Processing..." : "Checkout"}
+                    </button>
+                  </div>
+                </>
+              )}
+            </TabsContent>
+
+            {/* Order History Tab */}
+            <TabsContent value="history">
+              {orders
+                .slice()
+                .reverse()
+                .map((order) => (
+                  <div key={order._id}>
+                    <div>
+                      <div className="flex justify-between">
+                        <div className="flex gap-4">
+                          <p className="font-bold">Total price:</p>
+                          <p>${order.totalPrice}</p>
+                        </div>
+                        <p>{order.status}</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <div className="flex gap-4">
+                          <p className="font-bold">Date:</p>
+                          <p className="h-[60px]">
+                            {new Date(order.updatedAt).toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <p className="font-bold">x</p>
+
+                          <p>{order.foodOrderItems.length}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </TabsContent>
+          </Tabs>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
