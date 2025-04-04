@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { addAddress } from "@/utils/axios";
 import { useUser } from "./AuthProvider/UserProvider";
+import Image from "next/image";
 
 export const DeliveryAddress = () => {
   const [address, setAddress] = useState("");
@@ -23,7 +24,7 @@ export const DeliveryAddress = () => {
       return;
     }
     try {
-      const response = await addAddress(id, address);
+      const response = await addAddress(address, id);
       if (response?.data) {
         setShowConfirm(true);
         setOpen(false);
@@ -38,7 +39,13 @@ export const DeliveryAddress = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <button className="flex border rounded-2xl bg-white h-[36px] px-3 items-center gap-2">
-            <img src="LocationIcon.png" className="w-[20px] h-[20px]" />
+            <Image
+              src="/LocationIcon.png" // assumes this is in your public/ folder
+              alt="Location Icon"
+              width={20}
+              height={20}
+              className="w-[20px] h-[20px]"
+            />
             <p className="text-[#71717A]">
               {address ? address : "Add location"}
             </p>

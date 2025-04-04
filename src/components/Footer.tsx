@@ -1,6 +1,7 @@
 "use client";
 
 import MotionText from "./MotionText";
+import Image from "next/image";
 
 export const Footer = () => {
   return (
@@ -11,7 +12,12 @@ export const Footer = () => {
 
       <div className="flex justify-between text-white gap-x-4 mt-[70px] px-10">
         <div>
-          <img src="LogoContainColumn.png" />
+          <Image
+            src="/LogoContainColumn.png" // Update the src path accordingly
+            alt="Nomnom Logo"
+            width={150} // Set appropriate width
+            height={50} // Set appropriate height
+          />
         </div>
         <div className="flex flex-col space-y-4">
           <p className="text-[#71717A]">NOMNOM</p>
@@ -39,10 +45,20 @@ export const Footer = () => {
           <p className="text-[#71717A]">FOLLOW US</p>
           <div className="flex">
             <a>
-              <img src="fbIcon.png" />
+              <Image
+                src="/fbIcon.png" // Update the src path accordingly
+                alt="Facebook Icon"
+                width={24} // Set appropriate width
+                height={24} // Set appropriate height
+              />
             </a>
             <a>
-              <img src="IGicon.png" />
+              <Image
+                src="/IGicon.png" // Update the src path accordingly
+                alt="Instagram Icon"
+                width={24} // Set appropriate width
+                height={24} // Set appropriate height
+              />
             </a>
           </div>
         </div>

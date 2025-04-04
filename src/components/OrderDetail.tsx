@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Sheet,
   SheetContent,
@@ -9,6 +10,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { postOrder, getOrder } from "@/utils/axios";
 import { useState, useEffect } from "react";
+import Image from "next/image"; // Import Image component for optimized images
+import { Order, PostOrderData } from "@/utils/axios";
 
 interface Food {
   _id: string;
@@ -21,34 +24,11 @@ interface Food {
   totalPrice: number;
 }
 
-interface Order {
-  _id: string;
-  items: Array<{
-    _id: string;
-    foodName: string;
-    quantity: number;
-    price: number;
-    totalPrice: number;
-  }>;
-  totalAmount: number;
-  status: string;
-  createdAt: string;
-}
-interface FoodOrder {
-  updatedAt: string | number | Date;
-  _id: string;
-  user: string;
-  totalPrice: number;
-  image: string;
-  foodOrderItems: { food: string; quantity: number }[];
-  status: string;
-}
-
 export const OrderDetail = () => {
   const [cart, setCart] = useState<Food[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [orders, setOrders] = useState<FoodOrder[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string>("");
 
   const fetchOrders = async () => {
@@ -92,7 +72,7 @@ export const OrderDetail = () => {
     setLoading(true);
 
     const userId = "65fd1a2b1234567890abcd12";
-    const orderData = {
+    const orderData: PostOrderData = {
       userId,
       items: cart.map(({ _id, quantity, image }) => ({
         _id,
@@ -126,27 +106,31 @@ export const OrderDetail = () => {
       {/* Button to open Sheet */}
       <Sheet>
         <SheetTrigger>
-          <img
-            src="IconButtonSags.png"
-            className="w-[36px] h-[36px]"
+          <Image
+            src="/IconButtonSags.png"
             alt="Cart Icon"
+            width={36}
+            height={36}
           />
         </SheetTrigger>
 
         {/* Sheet Content */}
         <SheetContent className="h-[100vh] overflow-y-auto">
-          {" "}
           {/* Add height and overflow */}
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
-              <img
-                src="IconButtonSags.png"
-                className="w-[36px] h-[36px]"
+              <Image
+                src="/IconButtonSags.png"
                 alt="Cart Icon"
+                width={36}
+                height={36}
               />
               Order Detail
             </SheetTitle>
           </SheetHeader>
+          {/* Show error if any */}
+          {error && <p className="text-red-500 mt-4">{error}</p>}{" "}
+          {/* Display error */}
           {/* Tabs Inside Sheet */}
           <Tabs defaultValue="cart" className="w-full mt-4">
             <TabsList className="flex justify-between border-b pb-2">
@@ -165,10 +149,12 @@ export const OrderDetail = () => {
                       key={index}
                       className="flex justify-between items-center border-b py-2"
                     >
-                      <img
+                      <Image
                         src={item.image}
-                        className="w-[50px] h-[50px] rounded-md"
                         alt={item.foodName}
+                        width={50}
+                        height={50}
+                        className="rounded-md"
                       />
                       <p className="text-lg font-medium">{item.foodName}</p>
                       <p className="text-lg font-bold">{`$${item.totalPrice.toFixed(
@@ -227,7 +213,6 @@ export const OrderDetail = () => {
                         </div>
                         <div className="flex gap-2">
                           <p className="font-bold">x</p>
-
                           <p>{order.foodOrderItems.length}</p>
                         </div>
                       </div>

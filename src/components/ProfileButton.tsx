@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // Importing Next.js Image component
 import {
   Popover,
   PopoverContent,
@@ -31,7 +32,13 @@ export const ProfileButton = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button>
-          <img src="IconButtonProfile.png" className="w-[36px] h-[36px]" />
+          {/* Using next/image instead of img */}
+          <Image
+            src="/IconButtonProfile.png"
+            alt="Profile icon"
+            width={36}
+            height={36}
+          />
         </button>
       </PopoverTrigger>
 

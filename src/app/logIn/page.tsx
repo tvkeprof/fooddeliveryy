@@ -4,11 +4,12 @@ import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-const LogIn = ({}) => {
+import Link from "next/link";
+import Image from "next/image";
+
+const LogIn = () => {
   const Router = useRouter();
-  const goToSignUp = () => {
-    Router.push("/signUp");
-  };
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,7 +18,7 @@ const LogIn = ({}) => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:9999/login",
+        "https://food-delivery-service-te0i.onrender.com/login",
         formData
       );
       const { token } = response.data;
@@ -25,9 +26,9 @@ const LogIn = ({}) => {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       console.log("Login success", response.data);
       if (response.data.role === "ADMIN") {
-        await Router.push("/admin");
+        Router.push("/admin");
       } else {
-        await Router.push("/home");
+        Router.push("/home");
       }
     } catch (err) {
       console.log("login failed", err);
@@ -66,22 +67,27 @@ const LogIn = ({}) => {
           className="bg-gray-300 p-3 rounded-lg"
           onClick={handleLogin}
         >
-          Let's go
+          Lets go
         </button>
+
         <div className="flex gap-4 justify-center">
-          <p className="text-[#71717A] text-lg">Don't have an account?</p>
-          <a onClick={goToSignUp} className="text-blue-500 text-lg">
+          <p className="text-[#71717A] text-lg">{`Don't have an account?`}</p>
+          <Link href="/signUp" className="text-blue-500 text-lg">
             Sign up
-          </a>
+          </Link>
         </div>
       </div>
       <div className="w-[55%] h-[80%] mr-[100px]">
-        <img
-          src="deliveryWithBike.png"
+        <Image
+          src="/deliveryWithBike.png"
+          alt="Delivery person on a bike"
+          width={800}
+          height={600}
           className="w-full h-full rounded-[10px]"
         />
       </div>
     </div>
   );
 };
+
 export default LogIn;

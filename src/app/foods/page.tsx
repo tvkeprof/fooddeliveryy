@@ -3,26 +3,27 @@
 import { getFoods, getCategories } from "@/utils/axios";
 import { useEffect, useState } from "react";
 import { FoodDetail } from "@/components/FoodDetail";
-
-interface Food {
+import Image from "next/image";
+export type Food = {
   _id: string;
   foodName: string;
   price: number;
   ingredients: string;
   image: string;
   category: string;
-}
+};
 
-interface Category {
+export type Category = {
   _id: string;
   categoryName: string;
-}
+  categoryId: string;
+};
 
 const AllFoods = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [foods, setFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+  const [selectedFood, setSelectedFood] = useState<Food>({} as Food);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -32,8 +33,8 @@ const AllFoods = () => {
           getFoods(),
           getCategories(),
         ]);
-        setFoods(foodData || []);
-        setCategories(categoryData || []);
+        setFoods(foodData);
+        setCategories(categoryData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -54,7 +55,6 @@ const AllFoods = () => {
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
-    setSelectedFood(null);
   };
 
   return (
@@ -76,11 +76,14 @@ const AllFoods = () => {
                       key={food._id}
                       className="w-[400px] relative h-auto outline-1 outline-offset-2 outline-solid p-2 rounded-lg bg-white shadow-lg"
                     >
-                      <img
+                      <Image
                         src={food.image}
-                        className="w-[330px] h-[200px] m-auto object-cover rounded-md mt-2"
                         alt={food.foodName}
+                        width={330}
+                        height={200}
+                        className="m-auto object-cover rounded-md mt-2"
                       />
+
                       <button
                         onClick={() => handleFoodClick(food)}
                         className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded-full shadow-md hover:bg-red-600 transition"

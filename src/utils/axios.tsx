@@ -1,46 +1,100 @@
-import axios from "axios";
-import { useId } from "react";
+import { Category, Food } from "@/app/foods/page";
+import axios, { AxiosResponse } from "axios";
+import { Key, ReactNode } from "react";
 
-export const getCategories = async () => {
+export interface Order {
+  foodOrderItems: {
+    food: string;
+    quantity: number;
+  }[];
+  updatedAt: string | number | Date;
+  totalPrice: ReactNode;
+  _id: Key | null | undefined;
+  id: string;
+  foodId: string;
+  quantity: number;
+  total: number;
+  status: string;
+}
+
+export interface PostOrderData {
+  userId: string;
+  items: {
+    _id: string;
+    quantity: number;
+    image: string;
+  }[];
+  totalAmount: number;
+  status: string;
+}
+
+export const getCategories = async (): Promise<Category[]> => {
   try {
-    const response = await axios.get("http://localhost:9999/category");
+    const response: AxiosResponse<Category[]> = await axios.get(
+      "https://food-delivery-service-te0i.onrender.com/category"
+    );
     return response.data;
   } catch (err) {
-    console.log("err while gettin categories", err);
+    console.log("err while getting categories", err);
+    throw err;
   }
 };
-export const getFoods = async () => {
+
+// Fetch foods
+export const getFoods = async (): Promise<Food[]> => {
   try {
-    const response = await axios.get("http://localhost:9999/food");
-    return response.data;
+    const response: AxiosResponse<Food[]> = await axios.get(
+      "https://food-delivery-service-te0i.onrender.com/food"
+    );
+    return response.data; // Assumes response.data is of type Food[]
   } catch (err) {
     console.log("err while getting foods", err);
+    throw err;
   }
 };
-export const addAddress = async (id: string, address: string) => {
+
+// Add address
+export const addAddress = async (
+  address: string,
+  id?: string
+): Promise<AxiosResponse> => {
   try {
-    const response = await axios.put(
-      `http://localhost:9999/user/addAdress/${id}`,
+    const response: AxiosResponse = await axios.put(
+      `https://food-delivery-service-te0i.onrender.com/user/addAdress/${id}`,
       { address }
     );
-    return response;
+    return response; // Return the AxiosResponse object
   } catch (err) {
     console.log("err while getting address", err);
+    throw err;
   }
 };
-export const postOrder = async (orderData: any) => {
+
+// Post order
+export const postOrder = async (
+  orderData: PostOrderData
+): Promise<AxiosResponse> => {
   try {
-    const response = await axios.post("http://localhost:9999/order", orderData);
-    return response;
+    const response: AxiosResponse = await axios.post(
+      "https://food-delivery-service-te0i.onrender.com/order",
+      orderData
+    );
+    return response; // Return the AxiosResponse object
   } catch (err) {
     console.log("err while getting order", err);
+    throw err;
   }
 };
-export const getOrder = async () => {
+
+// Fetch orders
+export const getOrder = async (): Promise<Order[]> => {
   try {
-    const response = await axios.get("http://localhost:9999/order");
-    return response.data;
+    const response: AxiosResponse<Order[]> = await axios.get(
+      "https://food-delivery-service-te0i.onrender.com/order"
+    );
+    return response.data; // Assumes response.data is of type Order[]
   } catch (err) {
     console.log("err while getting order", err);
+    throw err;
   }
 };
