@@ -11,8 +11,8 @@ export const Header = () => {
       <div className="w-full h-[70px] bg-[#18181B] flex justify-between px-10">
         <div className="w-[146px] h-[44px]">
           <Image
-            src="LogoNomNom.png" // Path to your logo image
-            alt="NomNom Logo" // Add a meaningful alt text for accessibility
+            src="/LogoNomNom.png" // Note the leading slash
+            alt="NomNom Logo"
             width={146}
             height={44}
           />
@@ -23,13 +23,13 @@ export const Header = () => {
           <ProfileButton />
         </div>
       </div>
-      <div>
+      <div className="relative w-full h-[570px]">
         <Image
-          src="BG.png" // Path to your background image
-          alt="Background image" // Add a meaningful alt text for accessibility
-          width={1920}
-          height={570}
-          layout="responsive" // Adjusts the layout for better responsiveness
+          src="/BG.png"
+          alt="Background image"
+          fill
+          className="object-cover"
+          priority
         />
       </div>
     </>

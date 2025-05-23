@@ -64,7 +64,7 @@ const LogIn = () => {
 
         <button
           type="submit"
-          className="bg-gray-300 p-3 rounded-lg"
+          className="bg-gray-300 p-3 rounded-lg hover:bg-gray-600"
           onClick={handleLogin}
         >
           Lets go
@@ -72,7 +72,10 @@ const LogIn = () => {
 
         <div className="flex gap-4 justify-center">
           <p className="text-[#71717A] text-lg">{`Don't have an account?`}</p>
-          <Link href="/signUp" className="text-blue-500 text-lg">
+          <Link
+            href="/signUp"
+            className="text-blue-500 text-lg hover:text-blue-900"
+          >
             Sign up
           </Link>
         </div>

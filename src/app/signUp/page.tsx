@@ -90,7 +90,10 @@ const SignUpPage = () => {
           />
         )}
 
-        <button type="submit" className="bg-gray-300 p-3 rounded-lg">
+        <button
+          type="submit"
+          className="bg-gray-300 p-3 rounded-lg hover:bg-gray-600"
+        >
           {step === 1 ? "Next" : "Let's go"}
         </button>
 
@@ -101,7 +104,7 @@ const SignUpPage = () => {
           <button
             type="button"
             onClick={goToLogIn}
-            className="text-blue-500 text-lg"
+            className="text-blue-500 text-lg hover:text-blue-900"
           >
             Log in
           </button>
